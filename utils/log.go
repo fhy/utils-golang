@@ -51,7 +51,9 @@ func InitLogger(logConfig *config.LogConfig) {
 	if len(path) >= 0 {
 		dir := filepath.Dir(path)
 		if _, err := os.Stat(dir); os.IsNotExist(err) {
-			err = os.MkdirAll(dir, 0755)
+			if os.MkdirAll(dir, 0755) != nil {
+				fmt.Printf("failed to create dir %s, error: %s", dir, err)
+			}
 		}
 	} else {
 		path, _ = os.Getwd()

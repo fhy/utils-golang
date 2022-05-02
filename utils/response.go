@@ -23,11 +23,11 @@ func writeContentType(w http.ResponseWriter, value []string) {
 }
 
 func ResponseSuccessJson(c *gin.Context, data interface{}, statusCode ...int) {
-	httpStatus := 200
+	httpStatus := http.StatusOK
 	if len(statusCode) > 0 {
 		httpStatus = statusCode[0]
 	}
-	val, _ := json.Marshal(addResponseExtraInfo(c, gin.H{"code": 2000, "msg": "success", "data": data}))
+	val, _ := json.Marshal(addResponseExtraInfo(c, gin.H{"code": SUCCESS_CODE_CUSTOM, "msg": SUCCESS_MSG_CUSTOM, "data": data}))
 	c.Status(httpStatus)
 	writeContentType(c.Writer, jsonContentType)
 	c.Writer.Write(val)
@@ -35,11 +35,11 @@ func ResponseSuccessJson(c *gin.Context, data interface{}, statusCode ...int) {
 }
 
 func ResponseSuccessJsonWithPagination(c *gin.Context, data interface{}, p *Pagination, statusCode ...int) {
-	httpStatus := 200
+	httpStatus := http.StatusOK
 	if len(statusCode) > 0 {
 		httpStatus = statusCode[0]
 	}
-	val, _ := json.Marshal(addResponseExtraInfo(c, gin.H{"code": 2000, "msg": "success", "data": data, "pagination": p}))
+	val, _ := json.Marshal(addResponseExtraInfo(c, gin.H{"code": SUCCESS_CODE_CUSTOM, "msg": SUCCESS_MSG_CUSTOM, "data": data, "pagination": p}))
 	c.Status(httpStatus)
 	writeContentType(c.Writer, jsonContentType)
 	c.Writer.Write(val)
@@ -47,7 +47,7 @@ func ResponseSuccessJsonWithPagination(c *gin.Context, data interface{}, p *Pagi
 }
 
 func ResponseFailedJson(c *gin.Context, code int, message string, data interface{}, statusCode ...int) {
-	httpStatus := 200
+	httpStatus := http.StatusOK
 	if len(statusCode) > 0 {
 		httpStatus = statusCode[0]
 	}
@@ -60,7 +60,7 @@ func ResponseFailedJson(c *gin.Context, code int, message string, data interface
 }
 
 func OutHttpJson(c *gin.Context, code int, message string, data interface{}, statusCode ...int) {
-	httpStatus := 200
+	httpStatus := http.StatusOK
 	if len(statusCode) > 0 {
 		httpStatus = statusCode[0]
 	}
