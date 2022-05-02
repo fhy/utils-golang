@@ -2,28 +2,11 @@ package config
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"reflect"
 	"regexp"
 	"strings"
-
-	"gopkg.in/yaml.v2"
 )
-
-func LoadConfYaml(configFile string, config *interface{}) error {
-	configs, err := ioutil.ReadFile(configFile)
-	if err != nil {
-		return err
-	}
-	err = yaml.Unmarshal(configs, &config)
-	if err != nil {
-		return err
-	}
-
-	FormatConfig(config)
-	return nil
-}
 
 func FormatConfig(config interface{}) {
 	v := reflect.ValueOf(config)
