@@ -19,10 +19,10 @@ type LogConfig struct {
 }
 
 // database
-type DbConfig struct {
-	Type   string      `yaml:"type"`
-	Config interface{} `yaml:"Config"`
-}
+// type DbConfig struct {
+// 	Type   string      `yaml:"type"`
+// 	Config interface{} `yaml:"config"`
+// }
 
 // jwt
 type Jwt struct {

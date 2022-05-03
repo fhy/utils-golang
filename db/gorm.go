@@ -13,23 +13,18 @@ const (
 	DB_TYPE_SQLITE = "sqlite"
 )
 
-func DbInit(dbconfig *config.DbConfig) (*gorm.DB, error) {
-	switch dbconfig.Type {
+func DbInit(typ string, cfg interface{}) (*gorm.DB, error) {
+	switch typ {
 	case DB_TYPE_SQLITE:
-		return sqliteInit(dbconfig.Config.(config.SqliteConfig))
+		return sqliteInit(cfg.(config.SqliteConfig))
 	}
 	return nil, errors.New("error database type")
 }
 
-func sqliteInit(config config.SqliteConfig, dst ...interface{}) (*gorm.DB, error) {
+func sqliteInit(config config.SqliteConfig) (*gorm.DB, error) {
 	db, err := gorm.Open(sqlite.Open(config.DbFile), &gorm.Config{})
 	if err != nil {
 		logger.Fatalf("gorm init error: %s", err)
-		return nil, err
-	}
-	
-	if err := db.AutoMigrate(dst...); err != nil {
-		logger.Fatalf("gorm migrate error: %s", err)
 		return nil, err
 	}
 	return db, nil
