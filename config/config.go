@@ -18,6 +18,20 @@ type LogConfig struct {
 	Level         string `yaml:"level"`
 }
 
+type Aliyun struct {
+	AccessKeyId     string `yaml:"id"`
+	AccessKeySecret string `yaml:"secret"`
+	RegionId        string `yaml:"region"`
+}
+
+type Oss struct {
+	AccessKeyId     string `yaml:"id"`
+	AccessKeySecret string `yaml:"secret"`
+	Endpoint        string `yaml:"endpoint"`
+	Bucket          string `yaml:"bucket"`
+	Prefix          string `yaml:"prefix"`
+}
+
 // database
 // type DbConfig struct {
 // 	Type   string      `yaml:"type"`
