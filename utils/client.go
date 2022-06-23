@@ -16,9 +16,16 @@ import (
 )
 
 type AccessClaims struct {
-	jwt.StandardClaims
+	UID       int64
 	TokenType string
-	ID        int64
+	jwt.RegisteredClaims
+}
+
+type RefreshClaims struct {
+	UID       int64
+	TokenType string
+	Salt      int64
+	jwt.RegisteredClaims
 }
 
 type ClientInfo struct {
@@ -118,16 +125,22 @@ func verifyToken(c *gin.Context, verifyKey *crypto.PublicKey) (int64, error) {
 	if err != nil {
 		if e, ok := err.(*jwt.ValidationError); ok {
 			if e.Errors == jwt.ValidationErrorExpired {
-				if token.Claims.(*AccessClaims).IssuedAt > time.Now().Add(-TOKEN_EXPIRE*2).Unix() {
+				if token.Claims.(*AccessClaims).IssuedAt.Unix() < time.Now().Add(-TOKEN_EXPIRE*2).Unix() {
 					c.Header("test", "refresh")
-					return token.Claims.(*AccessClaims).ID, nil
+					return token.Claims.(*AccessClaims).UID, nil
 				}
 			}
 		}
 		logger.Errorf("Invalid token: %s", err)
 		return 0, err
 	}
-	return token.Claims.(*AccessClaims).ID, nil
+	return token.Claims.(*AccessClaims).UID, nil
+}
+
+func VerifyRefleshToken(t string, verifyKey *crypto.PublicKey) (*jwt.Token, error) {
+	return jwt.ParseWithClaims(t, &RefreshClaims{}, func(token *jwt.Token) (interface{}, error) {
+		return verifyKey, nil
+	})
 }
 
 func LoadEdPrivateKeyFromDisk(location string) crypto.PrivateKey {

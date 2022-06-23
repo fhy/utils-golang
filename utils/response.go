@@ -14,6 +14,7 @@ type Response struct {
 }
 
 var jsonContentType = []string{"application/json; charset=utf-8"}
+var textContentType = []string{"text/plain; charset=utf-8"}
 
 func writeContentType(w http.ResponseWriter, value []string) {
 	header := w.Header()
@@ -91,4 +92,15 @@ func AddExtraInfoToContext(c *gin.Context, key string, value interface{}) {
 		}
 	}
 	c.Set(EXTRA_INFO, gin.H{key: value})
+}
+
+func ResponseText(c *gin.Context, text string, statusCode ...int) {
+	httpStatus := 200
+	if len(statusCode) > 0 {
+		httpStatus = statusCode[0]
+	}
+	c.Status(httpStatus)
+	writeContentType(c.Writer, textContentType)
+	c.Writer.WriteString(text)
+	c.Writer.Flush()
 }

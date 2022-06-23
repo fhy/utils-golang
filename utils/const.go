@@ -10,6 +10,8 @@ const (
 	ERRCODE_NOT_LOGINED         = 40005
 	ERRCODE_USER_NOT_EXIST      = 40006
 	ERRCODE_INVALID_SESSION     = 40101
+	ERRCODE_INVALID_Id          = 40102
+	ERRCODE_INVALID_TOKEN       = 40103
 	SUCCESS_CODE_CUSTOM         = 2000
 )
 
@@ -23,6 +25,7 @@ const (
 	ERRMSG_USER_NOT_EXIST      = "user not exist"
 	ERRMSG_INVALID_SESSION     = "invalid session"
 	ERRMSG_INVALID_Id          = "invalid id"
+	ERRMSG_INVALID_TOKEN       = "invalid token"
 	SUCCESS_MSG_CUSTOM         = "success"
 )
 
@@ -30,8 +33,8 @@ const (
 	TOKEN_IN_HEADER         = "X-Auth-Token"
 	USER_TOKEN_REDIS_PREFIX = "USER:TOKEN:"
 	USER_SID_REDIS_PREFIX   = "USER:SID:"
-	TOKEN_EXPIRE            = 24 * time.Hour
-	REFRESH_EXPIRE          = 2 * TOKEN_EXPIRE
+	TOKEN_EXPIRE            = 1 * time.Hour
+	REFRESH_EXPIRE          = 24 * TOKEN_EXPIRE
 )
 
 const (
@@ -43,4 +46,9 @@ const (
 	SESSION_COOKIE_NAME = "SID"
 	CLIENT_KEY          = "client"
 	UID_KEY             = "UID"
+)
+
+const (
+	TOKEN_TYPE_ACCESS  = "access_token"
+	TOKEN_TYPE_REFRESH = "refresh_token"
 )
