@@ -79,6 +79,13 @@ type WechatPayConfig struct {
 	NotifyURL string `yaml:"notify_url"`
 }
 
+type RocketMQConfig struct {
+	Host      string `yaml:"host"`
+	Port      int    `yaml:"port"`
+	AccessKey string `yaml:"access"`
+	SecretKey string `yaml:"secret"`
+}
+
 /*
 func LoadConf(configFile string, config interface{}) error {
 	fmt.Printf("loading configfile: %s\n", configFile)
