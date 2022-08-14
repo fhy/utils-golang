@@ -1,4 +1,4 @@
-module base
+module github.com/fhy/utils-golang
 
 go 1.17
 
