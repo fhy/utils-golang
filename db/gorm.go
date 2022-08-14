@@ -1,8 +1,9 @@
 package db
 
 import (
-	"base/config"
 	"errors"
+
+	"github.com/fhy/utils-golang/config"
 
 	logger "github.com/sirupsen/logrus"
 	"gorm.io/driver/sqlite"

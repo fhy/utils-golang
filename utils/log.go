@@ -1,13 +1,14 @@
 package utils
 
 import (
-	"base/config"
 	"bytes"
 	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
 	"time"
+
+	"github.com/fhy/utils-golang/config"
 
 	rotatelogs "github.com/lestrrat/go-file-rotatelogs"
 	logger "github.com/sirupsen/logrus"
