@@ -1,9 +1,10 @@
 package db
 
 import (
-	"base/config"
 	"context"
 	"fmt"
+
+	"github.com/fhy/utils-golang/config"
 
 	logger "github.com/sirupsen/logrus"
 
