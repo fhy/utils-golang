@@ -32,6 +32,11 @@ type Oss struct {
 	Prefix          string `yaml:"prefix"`
 }
 
+type DingTalkConfig struct {
+	AppKey    string `yaml:"id"`
+	AppSecret string `yaml:"secret"`
+}
+
 // database
 // type DbConfig struct {
 // 	Type   string      `yaml:"type"`
