@@ -88,7 +88,7 @@ func GetClientInfo(c *gin.Context) (*ClientInfo, error) {
 	}
 }
 
-func GetUser(verifyKey *crypto.PublicKey) gin.HandlerFunc {
+func GetUser(verifyKey crypto.PublicKey) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if id, err := verifyToken(c, verifyKey); err == nil {
 			c.Set(UID_KEY, id)
@@ -101,7 +101,7 @@ func GetUser(verifyKey *crypto.PublicKey) gin.HandlerFunc {
 	}
 }
 
-func UserAuthen(verifyKey *crypto.PublicKey) gin.HandlerFunc {
+func UserAuthen(verifyKey crypto.PublicKey) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if id, err := verifyToken(c, verifyKey); err == nil {
 			c.Set(UID_KEY, id)
