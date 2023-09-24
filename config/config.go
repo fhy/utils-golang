@@ -1,5 +1,7 @@
 package config
 
+import "go.mongodb.org/mongo-driver/mongo/options"
+
 type Server struct {
 	IP           string `yaml:"ip"`
 	Port         int    `yaml:"port"`
@@ -48,6 +50,16 @@ type Jwt struct {
 
 type SqliteConfig struct {
 	DbFile string `yaml:"dbfile"`
+}
+
+type MongoDBConfig struct {
+	Host     string           `yaml:"host"`
+	Port     int              `yaml:"port"`
+	Username string           `yaml:"username"`
+	Password string           `yaml:"password"`
+	DB       string           `yaml:"db"`
+	Timeout  int              `yaml:"timeout"`
+	LogLevel options.LogLevel `yaml:"logLevel"`
 }
 
 type RedisConfig struct {
