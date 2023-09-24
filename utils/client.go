@@ -4,14 +4,14 @@ import (
 	"crypto"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/gin-contrib/requestid"
 	"github.com/gin-gonic/gin"
-	"github.com/golang-jwt/jwt/v4"
-	"github.com/golang-jwt/jwt/v4/request"
+	"github.com/golang-jwt/jwt/v5"
+	"github.com/golang-jwt/jwt/v5/request"
 	logger "github.com/sirupsen/logrus"
 )
 
@@ -114,7 +114,7 @@ func UserAuthen(verifyKey *crypto.PublicKey) gin.HandlerFunc {
 	}
 }
 
-func verifyToken(c *gin.Context, verifyKey *crypto.PublicKey) (int64, error) {
+func verifyToken(c *gin.Context, verifyKey crypto.PublicKey) (int64, error) {
 	token, err := request.ParseFromRequest(c.Request, request.OAuth2Extractor, func(token *jwt.Token) (interface{}, error) {
 		// since we only use the one private key to sign the tokens,
 		// we also only use its public counter part to verify
@@ -123,12 +123,10 @@ func verifyToken(c *gin.Context, verifyKey *crypto.PublicKey) (int64, error) {
 
 	// If the token is missing or invalid, return error
 	if err != nil {
-		if e, ok := err.(*jwt.ValidationError); ok {
-			if e.Errors == jwt.ValidationErrorExpired {
-				if token.Claims.(*AccessClaims).IssuedAt.Unix() < time.Now().Add(-TOKEN_EXPIRE*2).Unix() {
-					c.Header("test", "refresh")
-					return token.Claims.(*AccessClaims).UID, nil
-				}
+		if errors.Is(err, jwt.ErrTokenExpired) {
+			if token.Claims.(*AccessClaims).IssuedAt.Unix() < time.Now().Add(-TOKEN_EXPIRE*2).Unix() {
+				c.Header("Auth-Refresh", "refresh")
+				return token.Claims.(*AccessClaims).UID, nil
 			}
 		}
 		logger.Errorf("Invalid token: %s", err)
@@ -144,7 +142,7 @@ func VerifyRefleshToken(t string, verifyKey *crypto.PublicKey) (*jwt.Token, erro
 }
 
 func LoadEdPrivateKeyFromDisk(location string) crypto.PrivateKey {
-	keyData, e := ioutil.ReadFile(location)
+	keyData, e := os.ReadFile(location)
 	if e != nil {
 		panic(e.Error())
 	}
@@ -156,7 +154,7 @@ func LoadEdPrivateKeyFromDisk(location string) crypto.PrivateKey {
 }
 
 func LoadEdPublicKeyFromDisk(location string) crypto.PublicKey {
-	keyData, e := ioutil.ReadFile(location)
+	keyData, e := os.ReadFile(location)
 	if e != nil {
 		panic(e.Error())
 	}
